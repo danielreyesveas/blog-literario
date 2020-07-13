@@ -22,23 +22,29 @@ const Header = () => {
 
           <ul className="nav-links">
             <li>
-              <Link href="/">Home</Link>
+              <Link href="/">
+                <a title="home">Home</a>
+              </Link>
             </li>
             <li>
-              <Link href="/about">About</Link>
+              <Link href="/about">
+                <a title="about">About</a>
+              </Link>
             </li>
             { user ? (
               <>
-                <li><a onClick={() => firebase.logout()}>Logout</a></li>
                 <li>
                   <Link href="/create-post">
-                    Nuevo
+                    <a title="create-post">Nuevo</a>
                   </Link>
+                </li>
+                <li>
+                  <a onClick={() => firebase.logout()}>Logout</a>
                 </li>
               </>
             ) : (
               <Link href="/login">
-                Login
+                <a title="login">Login</a>
               </Link>
             )}                                              
           </ul>

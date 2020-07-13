@@ -3,9 +3,9 @@ import { useRouter } from 'next/router';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import { es } from 'date-fns/locale';
 
-import Layout from '../../components/layout/Layout';
+import Layout from '../../components/layout/Layout.component';
 import { FirebaseContext } from '../../firebase';
-import Error404 from '../../components/layout/404';
+import Error404 from '../../components/404/404.component';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -163,7 +163,7 @@ const Post = () => {
 
         try {
             await firebase.db.collection('posts').doc(id).delete();
-            router.push('/posts');
+            router.push('/');
         } catch (error) {
             console.log(error);
         }

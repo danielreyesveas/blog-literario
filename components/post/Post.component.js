@@ -20,7 +20,6 @@ const Descripcion = styled.div`
 `;
 
 const Titulo = styled.a`
-    font-size: 2rem;
     font-weight: bold;
     margin: 0;
 
@@ -86,42 +85,87 @@ const Votos = styled.div`
 
 
 const Post = ({post}) => {
-
-    const { id, title, content, urlimagen, description, comments, created_at, votes } = post;
+console.log(post)
+    const { id, title, content, urlimagen, description, comments, created_at, votes, author } = post;
 
     return (
-        <Producto>
-            <Descripcion>                
+
+        <article key={post.id} className="post">
+            <div className="post-inner-content">
+                
+                <header className="entry-header page-header">
+                    <ul className="single-category"> 
+                        <li className="cat-item">
+                            <a href="https://colorlib.com/activello/category/post-formats/" title="Posts in this category test post formats.">Post Formats</a>
+                        </li>
+                    </ul> 
+                    <h2 className="entry-title">
+                        <Link href="/posts/[id]" as={`/posts/${id}`}>
+                            <a title={title}>{title}</a>                            
+                        </Link>
+                    </h2>
+                    <div className="entry-meta">
+                        <span className="posted-on">
+                            Publicado hace: 
+                            <a href="https://colorlib.com/activello/post-format-standard/" rel="bookmark">
+                                <time className="entry-date published" dateTime="2016-10-05T00:27:25+00:00"> {formatDistanceToNow(new Date(created_at), {locale: es})}</time>
+                                <time className="updated" dateTime="2017-05-17T13:17:36+00:00"></time>
+                            </a>
+                        </span>
+                        by 
+                        <span className="author vcard">
+                            <a className="url fn n" href="https://colorlib.com/activello/author/aigars-silkalns/"> {author.nombre}</a>
+                        </span>
+                    </div>                    
+                </header>
+                
+                <a href="https://colorlib.com/activello/post-format-standard/" title="Post Format: Standard">
+                    <img width="710" height="335" src={urlimagen} /> 
+                    {/* <img width="710" height="335" src="https://colorlib.com/activello/wp-content/uploads/sites/10/2015/11/photo-1438109491414-7198515b166b-710x335.jpg" className="single-featured wp-post-image" alt="" srcSet="https://colorlib.com/activello/wp-content/uploads/sites/10/2015/11/photo-1438109491414-7198515b166b-710x335.jpg 710w, https://colorlib.com/activello/wp-content/uploads/sites/10/2015/11/photo-1438109491414-7198515b166b-1170x550.jpg 1170w" sizes="(max-width: 710px) 100vw, 710px" />  */}
+                </a>
+                
+                <div className="entry-content">
+                    <p>All children, except one, grow up. They soon know that they will grow up, and the way Wendy knew was this. </p>
+                    <div className="read-more">
+                        <a href="https://colorlib.com/activello/post-format-standard/" title="Post Format: Standard">Read More</a>
+                    </div>
+                </div>
+
+            </div>
+        </article>
+
+        // <Producto>
+        //     <Descripcion>                
                
-                <Link href="/posts/[id]" as={`/posts/${id}`}>
-                    <Imagen src={urlimagen} alt="image"/>
-                </Link>
+        //         <Link href="/posts/[id]" as={`/posts/${id}`}>
+        //             <Imagen src={urlimagen} alt="image"/>
+        //         </Link>
                     
-                <Link href="/posts/[id]" as={`/posts/${id}`}>
-                    <Titulo>{title}</Titulo>
-                </Link>
+        //         <Link href="/posts/[id]" as={`/posts/${id}`}>
+        //             <Titulo>{title}</Titulo>
+        //         </Link>
                 
-                <Titulo>{content}</Titulo>
+        //         <Titulo>{content}</Titulo>
 
-                <TextoDescripcion>{description}</TextoDescripcion>
+        //         <TextoDescripcion>{description}</TextoDescripcion>
 
-                    <Comentarios>
-                        <div>
-                            <img src="/static/img/comentario.png" alt="comentarios"/>
-                            <p>{comments.length} comentarios</p>
-                        </div>
-                    </Comentarios>
+        //             <Comentarios>
+        //                 <div>
+        //                     <img src="/static/img/comentario.png" alt="comentarios"/>
+        //                     <p>{comments.length} comentarios</p>
+        //                 </div>
+        //             </Comentarios>
 
-                    <p>Publicado hace: {formatDistanceToNow(new Date(created_at), {locale: es})}</p>
+        //             <p>Publicado hace: {formatDistanceToNow(new Date(created_at), {locale: es})}</p>
                 
-            </Descripcion>
+        //     </Descripcion>
 
-            <Votos>
-                <div> &#9650; </div>
-                <p>{votes}</p>
-            </Votos>
+        //     <Votos>
+        //         <div> &#9650; </div>
+        //         <p>{votes}</p>
+        //     </Votos>
 
-        </Producto>
+        // </Producto>
     );
 }
  

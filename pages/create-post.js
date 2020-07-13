@@ -25,17 +25,15 @@ const STATE_INICIAL = {
 }
  
 
-const newPost = () => {
+const createPost = () => {
 
   // State de las imágenes
   const [ nombreimagen, setImageName ] = useState('');
-  const [ subiendo, setUploading ] = useState(false);
-  const [ progreso, setProgress ] = useState(0);
   const [ urlimagen, setImageUrl ] = useState('');
 
   const [ error, guardarError ] = useState(false);
 
-  const { values, errors, handleSubmit, handleChange } = useValidation(STATE_INICIAL, createPostValidation, newPost);
+  const { values, errors, handleSubmit, handleChange } = useValidation(STATE_INICIAL, createPostValidation, createPost);
   const { title, subtitle, description, content, imagen } = values;
 
   // Hook de routing para redireccionar
@@ -44,7 +42,7 @@ const newPost = () => {
   // Context con las operaciones CRUD de firebase
   const { user, firebase } = useContext(FirebaseContext);
 
-  async function newPost() {console.log('asfd')
+  async function createPost() {console.log('asfd')
 
     if(!user){
       return router.push('/login');
@@ -68,24 +66,11 @@ const newPost = () => {
 console.log(post)
     firebase.db.collection('posts').add(post);
 
-    return router.push('/posts');
+    return router.push('/');
   }
 
-  const handleUploadStart = () => {
-      setProgress(0);
-      setUploading(true);
-  }
-
-  const handleProgress = progress => setProgress({ progress });
-
-  const handleUploadError = error => {
-      setUploading(error);
-      console.error(error);
-  };
 
   const handleUploadSuccess = name => {
-      setProgress(100);
-      setUploading(false);
       setImageName(name)
       firebase
           .storage
@@ -216,4 +201,4 @@ console.log(post)
   )
 }
 
-export default newPost;
+export default createPost;
