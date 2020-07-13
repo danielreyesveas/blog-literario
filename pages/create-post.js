@@ -6,6 +6,7 @@ import Router, { useRouter } from 'next/router';
 import FileUploader from 'react-firebase-file-uploader';
 import Layout from '../components/layout/Layout.component';
 import { Formulario, Campo, InputSubmit, Error } from '../components/ui/Formulario';
+import Boton from '../components/ui/Boton';
 
 import { FirebaseContext } from '../firebase';
 
@@ -28,10 +29,12 @@ const STATE_INICIAL = {
 const createPost = () => {
 
   // State de las imágenes
-  const [ nombreimagen, setImageName ] = useState('');
-  const [ urlimagen, setImageUrl ] = useState('');
+  const [ imagename, setImageName ] = useState('');
+  const [ imageurl, setImageUrl ] = useState('');
+  const [ isuploading, setIsUploading ] = useState(false);
+  const [ progress, setProgress ] = useState(0);
 
-  const [ error, guardarError ] = useState(false);
+  const [ error, setError ] = useState(false);
 
   const { values, errors, handleSubmit, handleChange } = useValidation(STATE_INICIAL, createPostValidation, createPost);
   const { title, subtitle, description, content, imagen } = values;
@@ -42,7 +45,7 @@ const createPost = () => {
   // Context con las operaciones CRUD de firebase
   const { user, firebase } = useContext(FirebaseContext);
 
-  async function createPost() {console.log('asfd')
+  async function createPost() {
 
     if(!user){
       return router.push('/login');
@@ -52,7 +55,7 @@ const createPost = () => {
       title,
       subtitle,
       description,
-      urlimagen,
+      imageurl,
       content,
       votes: 0,
       comments: [],
@@ -66,25 +69,39 @@ const createPost = () => {
 console.log(post)
     firebase.db.collection('posts').add(post);
 
-    return router.push('/');
+    return router.push('/')
   }
 
+  const handleUploadStart = () => {
+    setProgress(0)
+    setIsUploading(true)
+  }
+
+  const handleProgress = progress => {
+    setProgress(progress)
+  };
+
+  const handleUploadError = error => {
+    setIsUploading(false)
+    setError(error)
+  };
 
   const handleUploadSuccess = name => {
-      setImageName(name)
-      firebase
-          .storage
-          .ref("posts")
-          .child(name)
-          .getDownloadURL()
-          .then(url => {
-            console.log(url);
-            setImageUrl(url);
-          } );
+    setProgress(100)
+    setIsUploading(false)
+    setImageName(name)
+    firebase
+        .storage
+        .ref("posts")
+        .child(name)
+        .getDownloadURL()
+        .then(url => {
+          console.log(url);
+          setImageUrl(url);
+        });
   };
 
 
-  console.log(user)
   return (
     <div>
       <Layout>
@@ -134,8 +151,24 @@ console.log(post)
                   </Campo>
                   
                   { errors.subtitle && <Error>{ errors.subtitle }</Error>}
+                                    
+                  <Campo>
+                      <label htmlFor="description">Description</label>
+                      <textarea 
+                          id="description"
+                          name="description"
+                          value={description}
+                          onChange={handleChange}
+                      ></textarea>
+                  </Campo>
                   
+                  { errors.description && <Error>{ errors.description }</Error>}
+                  
+                </fieldset>
 
+                <fieldset>
+                  <legend>Sobre tu Producto</legend>                  
+                  
                   <Campo>
                       <label htmlFor="image">Image</label>
                       <FileUploader 
@@ -151,24 +184,14 @@ console.log(post)
                       />
                   </Campo>
 
-
-                </fieldset>
-
-                <fieldset>
-                  <legend>Sobre tu Producto</legend>
-
-                  <Campo>
-                      <label htmlFor="description">Description</label>
-                      <textarea 
-                          id="description"
-                          name="description"
-                          value={description}
-                          onChange={handleChange}
-                      ></textarea>
-                  </Campo>
-                  
-                  { errors.description && <Error>{ errors.description }</Error>}
-                  
+                  {imageurl && 
+                    <img 
+                      css={css`
+                        max-width: 300px;
+                      `}
+                      src={imageurl} 
+                    />
+                  }
                   
                   <Campo>
                       <label htmlFor="content">Content</label>
@@ -187,10 +210,12 @@ console.log(post)
                 
                 { error && <Error>{ error }</Error>}
     
-                <InputSubmit 
-                  type="submit"
-                  value="Crear Post"
-                />
+                {!isuploading && 
+                  <InputSubmit 
+                    type="submit"
+                    value="Crear Post"
+                  />
+                }
             </Formulario>
           </Fragment>
         ) }

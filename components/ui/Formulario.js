@@ -39,14 +39,17 @@ export const InputSubmit = styled.input`
     width: 100%;
     padding: 1.5rem;
     text-align: center;
+    border: 1px solid #e1e1e1;
     color: #393939;
-    font-size: 1.8rem;
+    font-size: 1.2rem;
     text-transform: uppercase;
-    border: none;
     font-family: 'PT Sans', sans-serif;
     font-weight: 700;
+
     &:hover {
         cursor: pointer;
+        color: white;
+        background-color: #a161bf;
     }
 `;
 

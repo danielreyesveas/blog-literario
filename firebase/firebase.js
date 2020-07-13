@@ -24,7 +24,6 @@ class Firebase {
     }
 
     async login(email, password) {
-        console.log(email, password);
         return this.auth.signInWithEmailAndPassword(email, password);
     }
 

@@ -85,8 +85,8 @@ const Votos = styled.div`
 
 
 const Post = ({post}) => {
-console.log(post)
-    const { id, title, content, urlimagen, description, comments, created_at, votes, author } = post;
+
+    const { id, title, subtitle, content, imageurl, description, comments, created_at, votes, author } = post;
 
     return (
 
@@ -118,14 +118,16 @@ console.log(post)
                         </span>
                     </div>                    
                 </header>
-                
-                <a href="https://colorlib.com/activello/post-format-standard/" title="Post Format: Standard">
-                    <img width="710" height="335" src={urlimagen} /> 
-                    {/* <img width="710" height="335" src="https://colorlib.com/activello/wp-content/uploads/sites/10/2015/11/photo-1438109491414-7198515b166b-710x335.jpg" className="single-featured wp-post-image" alt="" srcSet="https://colorlib.com/activello/wp-content/uploads/sites/10/2015/11/photo-1438109491414-7198515b166b-710x335.jpg 710w, https://colorlib.com/activello/wp-content/uploads/sites/10/2015/11/photo-1438109491414-7198515b166b-1170x550.jpg 1170w" sizes="(max-width: 710px) 100vw, 710px" />  */}
-                </a>
+
+                <Link href="/posts/[id]" as={`/posts/${id}`}>
+                    <a title={title}>
+                        <img width="710" height="335" src={imageurl} /> 
+                        {/* <img width="710" height="335" src="https://colorlib.com/activello/wp-content/uploads/sites/10/2015/11/photo-1438109491414-7198515b166b-710x335.jpg" className="single-featured wp-post-image" alt="" srcSet="https://colorlib.com/activello/wp-content/uploads/sites/10/2015/11/photo-1438109491414-7198515b166b-710x335.jpg 710w, https://colorlib.com/activello/wp-content/uploads/sites/10/2015/11/photo-1438109491414-7198515b166b-1170x550.jpg 1170w" sizes="(max-width: 710px) 100vw, 710px" />  */}
+                    </a>                            
+                </Link>                
                 
                 <div className="entry-content">
-                    <p>All children, except one, grow up. They soon know that they will grow up, and the way Wendy knew was this. </p>
+                    <p>{subtitle}</p>
                     <div className="read-more">
                         <a href="https://colorlib.com/activello/post-format-standard/" title="Post Format: Standard">Read More</a>
                     </div>
@@ -138,7 +140,7 @@ console.log(post)
         //     <Descripcion>                
                
         //         <Link href="/posts/[id]" as={`/posts/${id}`}>
-        //             <Imagen src={urlimagen} alt="image"/>
+        //             <Imagen src={imageurl} alt="image"/>
         //         </Link>
                     
         //         <Link href="/posts/[id]" as={`/posts/${id}`}>

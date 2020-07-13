@@ -66,7 +66,7 @@ const Post = () => {
 
     if(Object.keys(post).length === 0 && !error) return 'Cargando...';
 
-    const { comments, created_at, subtitle, description, title, urlimagen, votes, content, author, hasVoted } = post;
+    const { comments, created_at, subtitle, description, title, imageurl, votes, content, author, hasVoted } = post;
 
     // Administrar y validar los votos
     const votePost = () => {
@@ -189,7 +189,7 @@ const Post = () => {
 
                                 <p>Por: {author.nombre}</p>
 
-                                <img src={urlimagen} alt="imagen" />
+                                <img src={imageurl} alt="imagen" />
                                 <p>{description}</p>
                                 <p>{content}</p>
 

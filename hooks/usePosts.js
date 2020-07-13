@@ -23,7 +23,6 @@ const usePosts = orden =>{
                         }
                     });
                     guardarPosts(posts);
-                    console.log(posts)
             },
             error: () => console.log('error')
         });

@@ -143,10 +143,7 @@ const Layout = props => {
                         justify-self: left;                    
                     }                    
 
-                    @media screen and (min-width: 768px) {
-                        .container {
-                            width: 750px;
-                        }
+                    @media screen and (min-width: 768px) {            
                         .nav-btn {
                             display: none;
                         }
