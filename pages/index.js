@@ -6,7 +6,7 @@ import Sidebar from '../components/sidebar/Sidebar.component';
 
 const Home = () => {
 
-  const { posts } = usePosts('creado');
+  const { posts, islast, isfirst, prevPage, nextPage } = usePosts(6);
 
   return (
     <div>
@@ -14,7 +14,13 @@ const Home = () => {
 
         <div className="container main-content-area">          
 
-          <Posts posts={posts} />
+          <Posts 
+            posts={posts} 
+            isfirst={isfirst}
+            islast={islast}
+            prevPage={prevPage}
+            nextPage={nextPage}
+          />
 
           <Sidebar />                      
 

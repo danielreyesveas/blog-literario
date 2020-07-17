@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import Link from 'next/link';
 
 import Nav from '../nav/Nav.component'
+import Search from '../search/Search.component'
 import { HeaderContainer, LogoContainer } from './Header.styles'
 import { FirebaseContext } from '../../firebase'
 import Boton from '../ui/Boton'
@@ -13,22 +14,27 @@ const Header = () => {
   
   return (
     <header className="header">
-      <nav className="nav" id="nav">
+      <nav className="navbar navbar-default" id="nav">
         <div className="nav-center">
 
-          <button className="nav-btn">
-            <i className="fas fa-bars"></i>
-          </button>
+          {/* <div className="navbar-header">
+            <button type="button" className="btn navbar-toggle">
+              <span className="sr-only">Toggle navigation</span>
+              <span className="icon-bar"></span>
+              <span className="icon-bar"></span>
+              <span className="icon-bar"></span>
+            </button>
+          </div> */}
 
           <ul className="nav-links">
             <li>
               <Link href="/">
-                <a title="home">Home</a>
+                <a title="inicio">Inicio</a>
               </Link>
             </li>
             <li>
               <Link href="/about">
-                <a title="about">About</a>
+                <a title="popular">Popular</a>
               </Link>
             </li>
             { user ? (
@@ -43,27 +49,28 @@ const Header = () => {
                 </li>
               </>
             ) : (
-              <Link href="/login">
-                <a title="login">Login</a>
-              </Link>
+              <li>
+                <Link href="/login">
+                  <a title="login">Login</a>
+                </Link>
+              </li>
             )}                                              
           </ul>
 
-          <div className="nav-search">
-            <form method="get">
-              <input type="text" name="s" placeholder="Search" />
-            </form>
-          </div>
+          <Search />
+          
         </div>
       </nav>
       <div className="container">
         <div className="logo">
           <h1 className="site-name">
-            <a href="https://colorlib.com/activello/" className="custom-logo-link" rel="home">
-              <img width="207" height="28" src="https://colorlib.com/activello/wp-content/uploads/sites/10/2015/11/logo.png" className="custom-logo" alt="Activello Theme Demo" />
-            </a>
+            <Link href="/">
+              <a className="custom-logo-link" title="Cuenteros">
+                <img width="280" height="32" src="/static/img/logo.png" className="custom-logo" alt="Activello Theme Demo" />
+              </a>
+            </Link>
           </h1>
-          <div className="tagline">Just another colorlib.com site</div>
+          <div className="tagline">Todo es cuento</div>
         </div>
       </div>
     </header>

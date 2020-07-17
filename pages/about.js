@@ -1,16 +1,28 @@
-import React from 'react'
-import styled from '@emotion/styled'
+import React from 'react';
+import Layout from '../components/layout/Layout.component';
+import usePosts from '../hooks/usePosts';
+import Posts from '../components/posts/Posts.component';
+import Sidebar from '../components/sidebar/Sidebar.component';
 
-import Layout from '../components/layout/Layout.component'
+const About = () => {
 
-const About = () => (
-  <div>
-    <Layout>
-      <div>
-        <h1>Nosotros</h1>
-      </div>  
-    </Layout>
-  </div>
-)
+  const { posts } = usePosts(50);
 
-export default About
+  return (
+    <div>
+      <Layout>
+
+        <div className="container main-content-area">          
+
+          <Posts posts={posts}/>
+
+          <Sidebar />                      
+
+        </div>
+
+      </Layout>
+    </div>
+  )
+}
+
+export default About;

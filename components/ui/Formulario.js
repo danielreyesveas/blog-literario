@@ -1,15 +1,15 @@
 import styled from '@emotion/styled';
 
 export const Formulario = styled.form`
-    max-width: 600px;
+    max-width: 800px;
     width: 95%;
-    margin: 5rem auto 0 auto;
+    margin: 5rem auto 5rem auto;
 
     fieldset {
-        margin: 2rem 0;
+        margin: 1rem 0;
         border: 1px solid #e1e1e1;
-        font-size: 2rem;
-        padding: 2rem;
+        font-size: 1.2rem;
+        padding: 4rem;
     }
     legend {
         text-align: right;
@@ -21,13 +21,12 @@ export const Campo = styled.div`
     display: flex;
     align-items: center;
     label {
-        flex: 0 0 150px;
-        font-size: 1.8rem;
+        flex: 0 0 100px;
+        font-size: 1rem;
     }
     input,
     textarea {
         flex: 1;
-        padding: 1rem;
     }
     textarea {
         height: 200px;
@@ -37,11 +36,11 @@ export const Campo = styled.div`
 export const InputSubmit = styled.input`
     background-color: transparent;
     width: 100%;
-    padding: 1.5rem;
+    padding: 1rem;
     text-align: center;
     border: 1px solid #e1e1e1;
     color: #393939;
-    font-size: 1.2rem;
+    font-size: 1rem;
     text-transform: uppercase;
     font-family: 'PT Sans', sans-serif;
     font-weight: 700;
@@ -57,7 +56,7 @@ export const Error = styled.p`
     padding: 1rem;
     font-family: 'PT Sans', sans-serif;
     font-weight: 700;
-    font-size: 1.4rem;
+    font-size: 1rem;
     color: red;
     text-align: center;
     text-transform: uppercase;

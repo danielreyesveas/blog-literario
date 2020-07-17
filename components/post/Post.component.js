@@ -86,7 +86,7 @@ const Votos = styled.div`
 
 const Post = ({post}) => {
 
-    const { id, title, subtitle, content, imageurl, description, comments, created_at, votes, author } = post;
+    const { id, title, subtitle, content, imageurl, description, comments, created_at, votes, author, category } = post;
 
     return (
 
@@ -96,7 +96,7 @@ const Post = ({post}) => {
                 <header className="entry-header page-header">
                     <ul className="single-category"> 
                         <li className="cat-item">
-                            <a href="https://colorlib.com/activello/category/post-formats/" title="Posts in this category test post formats.">Post Formats</a>
+                            <a href="https://colorlib.com/activello/category/post-formats/" title="Posts in this category test post formats.">{category.name}</a>
                         </li>
                     </ul> 
                     <h2 className="entry-title">
@@ -105,16 +105,16 @@ const Post = ({post}) => {
                         </Link>
                     </h2>
                     <div className="entry-meta">
-                        <span className="posted-on">
+                        {/* <span className="posted-on">
                             Publicado hace: 
                             <a href="https://colorlib.com/activello/post-format-standard/" rel="bookmark">
                                 <time className="entry-date published" dateTime="2016-10-05T00:27:25+00:00"> {formatDistanceToNow(new Date(created_at), {locale: es})}</time>
                                 <time className="updated" dateTime="2017-05-17T13:17:36+00:00"></time>
                             </a>
                         </span>
-                        by 
+                        by  */}
                         <span className="author vcard">
-                            <a className="url fn n" href="https://colorlib.com/activello/author/aigars-silkalns/"> {author.nombre}</a>
+                            <a href="#"> {author.nombre}</a>
                         </span>
                     </div>                    
                 </header>
@@ -127,9 +127,11 @@ const Post = ({post}) => {
                 </Link>                
                 
                 <div className="entry-content">
-                    <p>{subtitle}</p>
+                    <p>{description}</p>
                     <div className="read-more">
-                        <a href="https://colorlib.com/activello/post-format-standard/" title="Post Format: Standard">Read More</a>
+                        <Link href="/posts/[id]" as={`/posts/${id}`}>
+                            <a title="more">Leer</a>                            
+                        </Link>
                     </div>
                 </div>
 

@@ -5,11 +5,9 @@ import { es } from 'date-fns/locale';
 
 import Layout from '../../components/layout/Layout.component'
 import Sidebar from '../../components/sidebar/Sidebar.component'
-import Spinner from '../../components/spinner/Spinner.component'
 import Link from 'next/link'
 import { FirebaseContext } from '../../firebase';
 import Error404 from '../../components/404/404.component';
-
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -69,7 +67,7 @@ const Post = () => {
         }
     }, [id]);
 
-    if(Object.keys(post).length === 0 && !error) return <Spinner />;
+    if(Object.keys(post).length === 0 && !error) return 'Cargando...';
 
     const { comments, created_at, subtitle, category, description, title, imageurl, votes, content, author, hasVoted } = post;
 
@@ -219,86 +217,7 @@ const Post = () => {
                                         </div>
                                     </div>
 
-                                    <div
-                                        css={css`
-                                            margin-top: 5rem;
-                                        `}
-                                    >
-                                        <p
-                                            css={css`
-                                                text-align: center;
-                                            `}
-                                        >{votes} votos</p>
-
-                                        { user && (
-                                            <Boton
-                                                onClick={votePost}
-                                            >Votar</Boton>
-                                        )}
-                                    </div>
-
                                 </div>
-
-                                { user && (
-                                    <>
-                                        <h2>Agrega tu comentario</h2>
-
-                                        <form
-                                            onSubmit={addComment}
-                                        >
-                                            <Campo>
-                                                <input 
-                                                    type="text"
-                                                    name="mensaje"
-                                                    onChange={commentChange}
-                                                />
-                                            </Campo>
-                                            <InputSubmit
-                                                type="submit"
-                                                value="Agregar Comentario"
-                                            />
-                                        </form>
-                                    </>
-                                )}
-
-                                <h2
-                                    css={css`
-                                        margin: 2rem 0;
-                                    `}
-                                >Comentarios</h2>
-
-                                {comments.length === 0 ? "Aún no hay comentarios" : (
-                                    <ul>
-                                        { comments.map((comment, i) => (
-                                            <li
-                                                key={`${comment.userId}-${i}`}
-                                                css={css`
-                                                    border: 1px solid #e1e1e1;
-                                                    padding: 2rem;
-                                                `}
-                                            >
-                                                <p>{comment.mensaje}</p>
-                                                <p>Escrito por
-                                                    <span
-                                                        css={css`
-                                                            font-weight: bold;
-                                                        `}
-                                                    >
-                                                        {''} {comment.userName}
-                                                    </span>        
-                                                </p>
-                                                { isAuthor(comment.userId) && <CreadorProducto>Es Creador</CreadorProducto> }
-                                            </li>
-                                        ))}
-                                    </ul>
-                                )}
-
-                                { canDelete() && 
-                                    <Boton
-                                        onClick={deletePost}
-                                    >Eliminar</Boton>
-                                }
-
                             </article>
 
                             {/* <nav className="navigation post-navigation" role="navigation">
