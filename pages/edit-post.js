@@ -1,4 +1,4 @@
-import React, { useState, useContext, Fragment } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled'
@@ -21,15 +21,6 @@ import { ca } from 'date-fns/locale';
 
 // validaciones
 
-const STATE_INICIAL = {
-  category: '',
-  title: '',
-  subtitle: '',
-  imagen: '',
-  description: '',
-  content: '',
-  urlimagen: ''
-}
  
 const Select = styled.select`
   width: 100%;
@@ -41,7 +32,7 @@ const Select = styled.select`
   font-size: 1rem;
 `;
 
-const createPost = () => {
+const editPost = () => {
 
   const { categories } = useCategories('name');
 
@@ -50,26 +41,83 @@ const createPost = () => {
   const [ imageurl, setImageUrl ] = useState('');
   const [ isuploading, setIsUploading ] = useState(false);
   const [ progress, setProgress ] = useState(0);
+  const [ querydb, setQueryDB] = useState(true)
 
-  const [ selectedCategory, setCategory ] = useState({})
-
+  const [ post, setPost ] = useState({
+    title: '',
+		category: '',
+		subtitle: '',
+		imagen: '',
+		description: '',
+		content: '',
+		imageurl: '',
+		urlimagen: ''
+	});
   const [ error, setError ] = useState(false);
+  const [ errors, setErrors ] = useState([]);
 
-  const { values, errors, handleSubmit, handleChange, handleEditorChange } = useValidation(STATE_INICIAL, createPostValidation, createPost);
-  const { title, subtitle, description, content, imagen, category } = values;
+  const [ selectedCategory, setSelectedCategory ] = useState({})
+  const [ category, setCategory ] = useState('')
+
+	const { title, subtitle, description, content, imagen } = post;
 
   // Hook de routing para redireccionar
   const router = useRouter();
+  const { query: { id }} = router;
 
   // Context con las operaciones CRUD de firebase
   const { user, firebase } = useContext(FirebaseContext);
 
-  async function createPost() {
+  const handleChange = e => {
+    console.log(e.target.name)
+    console.log(e.target.value)
+    setPost({
+        ...post,
+        [e.target.name] : e.target.value
+    })
+  }
+
+  const handleEditorChange = e => {
+    console.log(e)
+    setPost({
+        ...post,
+        [e.target.id] : e.target.getContent()
+    })
+  }
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    editPost();
+  }
+
+  useEffect(() => {
+	  if(id && querydb){
+		  const getPost = async () => {
+			  const query = await firebase.db.collection('posts').doc(id);
+        const postQuery = await query.get().then(function (querySnapshot) {
+          console.log(querySnapshot)
+          if(querySnapshot.exists){
+            const originalPost = querySnapshot.data()
+            setPost(originalPost);
+            console.log(originalPost.imageurl)
+            setImageUrl(originalPost.imageurl)
+            setCategory(originalPost.category.id)
+          }else{
+            setError(true);
+          }
+          setQueryDB(false)
+        });
+		  }
+		  getPost();
+	  }
+  }, [id]);
+
+  async function editPost() {
 
     if(!user){
       return router.push('/login');
     }
-
+console.log(selectedCategory)
     const post = {
       title,
       subtitle,
@@ -87,14 +135,30 @@ const createPost = () => {
       hasVoted: []
     }
 
-    firebase.db.collection('posts').add(post);
+    var doc = await firebase.db.collection("posts").doc(id)
 
-    return router.push('/')
+    // Set the "capital" field of the city 'DC'
+    return await doc.update({
+      title,
+      subtitle,
+      description,
+      content,
+      category: selectedCategory
+    })
+    .then(function() {
+      return router.push('/')
+    })
+    .catch(function(error) {
+      setError(error)
+      console.error("Error updating document: ", error);
+    });
   }
 
   const handleCategoryChange = id => {
     const selected = categories.find(category => category.id === id)
-    setCategory(selected) 
+    setCategory(id)
+    console.log(selected)
+    setSelectedCategory(selected) 
   }
 
   const handleUploadStart = () => {
@@ -121,7 +185,6 @@ const createPost = () => {
         .child(name)
         .getDownloadURL()
         .then(url => {
-          console.log(url);
           setImageUrl(url);
         });
   };
@@ -142,7 +205,7 @@ const createPost = () => {
                 text-align: center;
                 margin-top: 3rem;
               `}
-            >Nuevo Post</h1>
+            >Editar Post</h1>
             <Formulario
               onSubmit={handleSubmit}
               noValidate
@@ -150,7 +213,7 @@ const createPost = () => {
               <fieldset>
 
                   <Campo>
-                    <label htmlFor="category">Categoría:</label>
+                    <label htmlFor="category">Categoría</label>
                     <Select
                       id="category"
                       name="category"
@@ -269,8 +332,8 @@ const createPost = () => {
                   
                   <div>
                     <Editor
-											id="content"
-											name="content"
+                      id="content"
+                      name="content"
                       initialValue="<p>Tu post...</p>"
                       apiKey="efucd0nn9moqu7owqg8rboil0p77oi9tbg16yz2noiuhaeiy"
                       init={{
@@ -285,8 +348,8 @@ const createPost = () => {
                         branding: false
                           
                       }}
-											onChange={handleEditorChange}
-											value={content}
+                      onChange={handleEditorChange}
+                      value={content}
                     />
                   </div>
                   
@@ -300,7 +363,7 @@ const createPost = () => {
                 {!isuploading && 
                   <InputSubmit 
                     type="submit"
-                    value="Crear Post"
+                    value="Editar Post"
                   />
                 }
             </Formulario>
@@ -313,4 +376,4 @@ const createPost = () => {
   )
 }
 
-export default createPost;
+export default editPost;

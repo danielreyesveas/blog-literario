@@ -11,7 +11,7 @@ const Search = () => {
   const { query: { q } }  = router;
 
   // Todos los posts
-  const { posts } = usePosts('created_at');
+  const { posts, islast, isfirst, prevPage, nextPage } = usePosts(6);
   const [ result, setResult ] = useState([]);
   
   useEffect(() => {
@@ -35,6 +35,10 @@ const Search = () => {
           <Posts 
             posts={result} 
             query={q}
+            isfirst={isfirst}
+            islast={islast}
+            prevPage={prevPage}
+            nextPage={nextPage}
           />
 
           <Sidebar />                      

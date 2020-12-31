@@ -4,22 +4,22 @@ export default function createPostValidation(values) {
 
     // Validar el nombre
     if(!values.title) {
-        errores.title = "El title es obligatorio";
+        errores.title = "El título es obligatorio";
     }
 
     // Validar el empresa
     if(!values.subtitle) {
-        errores.subtitle = "Nombre de subtitle es obligatorio";
+        errores.subtitle = "El exergo es obligatorio";
     }
     
     
     if(!values.content) {
-        errores.content = "Nombre de content es obligatorio";
+        errores.content = "El contenido es obligatorio";
     }
 
     // Validar el descripcion
     if(!values.description) {
-        errores.description = "Agrega una descripción de tu producto";
+        errores.description = "Agrega un fragmento para mostrar";
     }
 
     return errores;

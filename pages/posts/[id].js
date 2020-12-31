@@ -2,6 +2,7 @@ import React, { useEffect, useContext, useState, Fragment } from 'react';
 import { useRouter } from 'next/router';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import { es } from 'date-fns/locale';
+import ReactHtmlParser from 'react-html-parser';
 
 import Layout from '../../components/layout/Layout.component'
 import Sidebar from '../../components/sidebar/Sidebar.component'
@@ -42,11 +43,12 @@ const Post = () => {
     const [ post, setPost ] = useState({});
     const [ error, setError ] = useState(false);
     const [ comment, setComment ] = useState({});
-    const [ querydb, setQueryDB ] = useState(true);
+    const [ querydb, setQueryDB] = useState(true)
 
     // Routing para obtener el id actual
     const router = useRouter();
     const { query: { id }} = router;
+    console.log(router)
     console.log(id)
 
     // Context de firebase
@@ -59,11 +61,10 @@ const Post = () => {
                 const post = await postQuery.get();
                 if(post.exists){
                     setPost(post.data());
-                    setQueryDB(false);
                 }else{
                     setError(true);
-                    setQueryDB(false);
                 }
+                setQueryDB(false)
             }
             getPost();
         }
@@ -100,8 +101,6 @@ const Post = () => {
             votes: newTotal,
             hasVoted: newHasVoted 
         });
-
-        setQueryDB(true); // Hay un voto, por lo tanto consultar a la BD
     }
 
     // Funciones para crear comentarios
@@ -147,11 +146,17 @@ const Post = () => {
             comments: newComments
         });
 
-        setQueryDB(true); // Hay un comentario, por lo tanto consultar a la BD
     }
 
     // Función que revisa que el creador del post sea el autenticado
     const canDelete = () => {
+        if(!user) return false;
+
+        if(author.id === user.uid) return true;        
+    }
+    
+    const canEdit = () => {
+        return true
         if(!user) return false;
 
         if(author.id === user.uid) return true;        
@@ -173,6 +178,8 @@ const Post = () => {
             console.log(error);
         }
     }
+
+
 
     return (
         <Layout>
@@ -205,11 +212,11 @@ const Post = () => {
                                     <div className="entry-content">
                                         {subtitle && (
                                             <blockquote>
-                                                <p>{subtitle}</p>
+                                                { ReactHtmlParser(subtitle) }
                                             </blockquote>
                                         )}
-
-                                        <p>{content}</p>
+                                        
+                                        { ReactHtmlParser(content) }
                                     </div>
                                     
                                     <div className="entry-footer">
@@ -293,11 +300,19 @@ const Post = () => {
                                     </ul>
                                 )}
 
+                                { canEdit() && 
+                                    <Link href={{ pathname: '/edit-post', query: { id: id } }}>
+                                        <Boton>Editar</Boton>
+                                    </Link>
+                                }
+
                                 { canDelete() && 
                                     <Boton
+                                        bgColor
                                         onClick={deletePost}
                                     >Eliminar</Boton>
                                 }
+                            
 
                             </article>
 

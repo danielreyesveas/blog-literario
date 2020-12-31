@@ -24,6 +24,14 @@ const useValidation = (initialState, validate, fn) => {
             [e.target.name] : e.target.value
         })
     }
+    
+    const handleEditorChange = e => {
+        console.log(e)
+        setValues({
+            ...values,
+            [e.target.id] : e.target.getContent()
+        })
+    }
 
     // Función que se ejecuta cuando el usuario hace submit
     const handleSubmit = e => {
@@ -44,7 +52,8 @@ const useValidation = (initialState, validate, fn) => {
         errors, 
         handleSubmit,
         handleChange,
-        handleBlur
+        handleBlur,
+        handleEditorChange
     }
 }
  

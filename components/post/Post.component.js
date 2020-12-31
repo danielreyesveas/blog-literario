@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import ReactHtmlParser from 'react-html-parser';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import { es } from 'date-fns/locale';
 import Link from 'next/link';
@@ -90,13 +91,15 @@ const Post = ({post}) => {
 
     return (
 
-        <article key={post.id} className="post">
+        <article key={id} className="post">
             <div className="post-inner-content">
                 
                 <header className="entry-header page-header">
                     <ul className="single-category"> 
                         <li className="cat-item">
-                            <a href="https://colorlib.com/activello/category/post-formats/" title="Posts in this category test post formats.">{category.name}</a>
+                            <Link href="/category/[slug]" as={`/category/${category.slug}`}>
+                                <a title={category.name}>{category.name}</a>
+                            </Link>
                         </li>
                     </ul> 
                     <h2 className="entry-title">
@@ -127,7 +130,7 @@ const Post = ({post}) => {
                 </Link>                
                 
                 <div className="entry-content">
-                    <p>{description}</p>
+                    { ReactHtmlParser(description) }
                     <div className="read-more">
                         <Link href="/posts/[id]" as={`/posts/${id}`}>
                             <a title="more">Leer</a>                            

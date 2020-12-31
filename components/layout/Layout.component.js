@@ -600,7 +600,6 @@ const Layout = props => {
                     }
                     .entry-title a {
                         color: #444;
-                        text-transform: capitalize;
                     }
                     .cat-item a:hover,
                     .cat-item a:focus,
@@ -993,7 +992,6 @@ const Layout = props => {
                     .widget .post-content span {
                         font-size: 12px;
                     }
-                    
                     
                 `}
             />
